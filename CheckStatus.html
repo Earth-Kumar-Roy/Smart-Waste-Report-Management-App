@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<base target="_top">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Check Ticket Status | Citizen Portal</title>
+	<script src="https://cdn.tailwindcss.com"></script>
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+	<style>
+		/* Custom Scrollbar for Details Box */
+		#ticketDetails::-webkit-scrollbar {
+			width: 6px;
+		}
+
+		#ticketDetails::-webkit-scrollbar-thumb {
+			background: #10b981;
+			border-radius: 10px;
+		}
+
+		.star-rating i {
+			cursor: pointer;
+			transition: transform 0.2s;
+		}
+
+		.star-active {
+			color: #fbbf24;
+		}
+
+		.star-inactive {
+			color: #d1d5db;
+		}
+	</style>
+</head>
+
+<body class="bg-slate-50 font-sans min-h-screen flex items-center justify-center p-4 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-blue-100 via-slate-50 to-emerald-50">
+
+	<div class="max-w-2xl w-full bg-white rounded-3xl shadow-2xl border border-slate-100 overflow-hidden transform transition-all duration-500">
+
+		<div class="bg-emerald-700 p-6 text-center text-white relative">
+			<div class="absolute top-4 right-4 opacity-20 text-4xl">
+				<i class="fas fa-search-location"></i>
+			</div>
+			<h2 class="text-2xl font-black tracking-tight mb-1 uppercase">Ticket Status</h2>
+			<p class="text-emerald-100 text-[10px] font-bold uppercase tracking-widest">Dedicated to a Cleaner Kolkata </p>
+		</div>
+
+		<div class="flex border-b border-slate-100">
+			<button onclick="loadPage('Index')" class="flex-1 py-3 text-xs font-bold text-slate-500 hover:bg-slate-50 hover:text-emerald-700 transition flex items-center justify-center gap-2 border-r border-slate-100 uppercase tracking-tighter">
+				<i class="fas fa-home"></i> Home
+			</button>
+			<button onclick="loadPage('RaiseIssue')" class="flex-1 py-3 text-xs font-bold text-slate-500 hover:bg-slate-50 hover:text-emerald-700 transition flex items-center justify-center gap-2 uppercase tracking-tighter">
+				<i class="fas fa-plus-circle"></i> Raise New Issue
+			</button>
+		</div>
+
+		<div class="p-6 md:p-8 space-y-6">
+			<form id="ticketForm" onsubmit="return validateTicketID()" class="space-y-4">
+				<div class="relative">
+					<label for="ticketIDInput" class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-1">Unique Ticket ID</label>
+					<div class="relative">
+						<span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400 text-sm">
+							<i class="fas fa-ticket-alt"></i>
+						</span>
+						<input type="text" id="ticketIDInput" required placeholder="e.g. 29EKR569" class="w-full pl-10 pr-4 py-4 bg-slate-50 border-2 border-slate-100 rounded-2xl outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all font-mono font-bold text-slate-700">
+					</div>
+				</div>
+
+				<button type="submit" id="trackBtn" class="w-full py-4 bg-emerald-700 hover:bg-emerald-800 text-white font-black rounded-2xl shadow-xl shadow-emerald-700/20 active:scale-95 transition-all uppercase tracking-widest text-sm">
+					Track Progress
+				</button>
+
+				<div id="statusDisplay" class="text-center text-xs font-black min-h-[16px] uppercase tracking-tighter text-emerald-700 italic">
+				</div>
+			</form>
+
+			<div id="ticketDetails" class="hidden animate-in fade-in slide-in-from-top-4 duration-500 border-t border-slate-100 pt-6 space-y-6">
+
+				<div class="bg-emerald-50 p-4 rounded-2xl border-l-4 border-emerald-500 shadow-sm">
+					<h4 class="text-xs font-black text-emerald-800 uppercase tracking-widest mb-3 flex items-center gap-2">
+						<i class="fas fa-info-circle"></i> Ticket Information
+					</h4>
+					<div class="grid grid-cols-1 md:grid-cols-2 gap-y-3 gap-x-6 text-sm">
+						<p class="text-slate-600 font-medium">Ticket: <span id="ticketIdDisplay" class="text-slate-900 font-bold"></span></p>
+						<p class="text-slate-600 font-medium">Assigned: <span id="assignedTimeDisplay" class="text-slate-900 font-bold"></span></p>
+						<p class="text-slate-600 font-medium">Posted By: <span id="nameDisplay" class="text-slate-900 font-bold"></span></p>
+						<p class="text-slate-600 font-medium">Phone: <span id="contactDisplay" class="text-slate-900 font-bold"></span></p>
+						<p class="text-slate-600 font-medium">Region: <span id="regionDisplay" class="text-slate-900 font-bold"></span></p>
+						<div id="mapButtonWrapper">
+							<button id="mapBtn" class="text-blue-600 text-xs font-bold hover:underline flex items-center gap-1 uppercase tracking-tighter" type="button" onclick="openInMaps()">
+								<i class="fas fa-map-marked-alt"></i> View Location on Map
+							</button>
+						</div>
+					</div>
+				</div>
+
+				<div class="space-y-2">
+					<p id="descriptionDisplay" class="text-sm text-slate-600 leading-relaxed bg-slate-50 p-4 rounded-xl italic border border-slate-100">
+					</p>
+				</div>
+
+				<div class="bg-slate-900 text-slate-300 p-5 rounded-2xl space-y-2 font-mono text-[11px] shadow-lg">
+					<p id="statusTicketDisplay" class="text-emerald-400 font-black text-sm uppercase"></p>
+					<div class="border-t border-slate-800 my-2"></div>
+					<p id="completionByDisplay"></p>
+					<p id="completionTimeDisplay"></p>
+				</div>
+
+				<div class="space-y-6">
+					<div id="issueImageWrapper" class="hidden space-y-2">
+						<h4 class="text-xs font-black text-slate-400 uppercase tracking-widest flex items-center gap-2 italic">
+							<i class="fas fa-history"></i> Original State
+						</h4>
+						<div class="rounded-xl border-2 border-slate-100 overflow-hidden shadow-inner bg-slate-50">
+							<iframe id="comp_issueFrame" class="w-full h-56 border-none" allow="autoplay"></iframe>
+						</div>
+					</div>
+
+					<div id="completedImageWrapper" class="hidden space-y-2 pb-4">
+						<h4 class="text-xs font-black text-emerald-500 uppercase tracking-widest flex items-center gap-2 italic">
+							<i class="fas fa-check-circle"></i> After Cleanup Proof
+						</h4>
+						<div class="rounded-xl border-2 border-emerald-100 overflow-hidden shadow-md bg-white">
+							<iframe id="comp_doneFrame" class="w-full h-56 border-none" allow="autoplay"></iframe>
+						</div>
+					</div>
+				</div>
+
+				<p id="finalMessage" class="text-center text-sm font-black uppercase tracking-tighter text-emerald-700 pt-2"></p>
+
+				<div id="feedbackSection" class="bg-slate-50 p-5 rounded-2xl border border-slate-200 hidden">
+					<div id="feedbackFormArea" class="hidden text-center">
+						<h4 class="text-xs font-black text-slate-800 uppercase tracking-widest mb-3">Please provide your valuable feedback</h4>
+						<div class="star-rating flex justify-center gap-2 mb-4" id="starContainer">
+							<i class="fas fa-star star-inactive text-2xl" data-rating="1"></i>
+							<i class="fas fa-star star-inactive text-2xl" data-rating="2"></i>
+							<i class="fas fa-star star-inactive text-2xl" data-rating="3"></i>
+							<i class="fas fa-star star-inactive text-2xl" data-rating="4"></i>
+							<i class="fas fa-star star-inactive text-2xl" data-rating="5"></i>
+						</div>
+						<textarea id="feedbackComment" maxlength="100" placeholder="Describe your experience (max 100 chars)..." class="w-full p-3 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 outline-none resize-none h-20 mb-3"></textarea>
+						<button onclick="submitFeedback()" id="submitFeedbackBtn" class="bg-emerald-600 text-white text-xs font-bold py-2 px-6 rounded-lg uppercase tracking-widest hover:bg-emerald-700 transition w-full md:w-auto disabled:bg-slate-400">
+							Submit Feedback
+						</button>
+						<div id="feedbackStatus" class="mt-2 text-xs font-bold italic"></div>
+					</div>
+
+					<div id="feedbackDisplayArea" class="hidden">
+						<h4 class="text-xs font-black text-slate-800 uppercase tracking-widest mb-2 text-center">Citizen's Feedback</h4>
+						<div id="ratedStarsDisplay" class="flex justify-center gap-1 mb-2"></div>
+						<p id="citizenFeedbackText" class="text-sm italic text-slate-600 text-center"></p>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="bg-slate-50 p-6 border-t border-slate-100">
+			<footer class="text-center text-[9px] text-slate-400 font-medium uppercase tracking-widest">
+				© 2026 Code Alchemists | Smart Waste Report Management App
+			</footer>
+		</div>
+	</div>
+
+<script>
+  (function () {
+    "use strict";
+
+    let processingInterval = null;
+    let currentLat = null;
+    let currentLon = null;
+    let selectedRating = 0;
+    let globalTicketID = "";
+
+    // Handle Star Interactions
+    const starIcons = document.querySelectorAll("#starContainer i");
+    starIcons.forEach(star => {
+      star.addEventListener("click", function() {
+        selectedRating = this.getAttribute("data-rating");
+        updateStarUI(selectedRating);
+      });
+    });
+
+    function updateStarUI(rating) {
+      starIcons.forEach(s => {
+        if (parseInt(s.getAttribute("data-rating")) <= parseInt(rating)) {
+          s.classList.replace("star-inactive", "star-active");
+        } else {
+          s.classList.replace("star-active", "star-inactive");
+        }
+      });
+    }
+
+    function loadPage(page) {
+      if (!page) return;
+      if (typeof google !== "undefined" && google.script && google.script.run) {
+        google.script.run.withSuccessHandler(function (html) {
+          document.open();
+          document.write(html);
+          document.close();
+        }).loadPage(page);
+      }
+    }
+
+    // Formats Google Drive links to work inside iframes
+    function drivePreviewUrl(driveUrl) {
+      if (!driveUrl) return "";
+      // Extract File ID from various Drive URL formats
+      let m = driveUrl.match(/\/d\/([a-zA-Z0-9_-]{10,})/);
+      let id = m ? m[1] : (driveUrl.match(/[?&]id=([a-zA-Z0-9_-]{10,})/) ? driveUrl.match(/[?&]id=([a-zA-Z0-9_-]{10,})/)[1] : "");
+      return id ? "https://drive.google.com/file/d/" + id + "/preview" : driveUrl;
+    }
+
+    function openInMaps() {
+      if (!currentLat || !currentLon) return;
+      // Corrected map URL format
+      window.open("https://www.google.com/maps?q=" + currentLat + "," + currentLon, "_blank");
+    }
+
+    function clearDetails() {
+      const ids = ["ticketIdDisplay", "assignedTimeDisplay", "nameDisplay", "contactDisplay", "regionDisplay", "descriptionDisplay", "statusTicketDisplay", "completionByDisplay", "completionTimeDisplay", "finalMessage", "citizenFeedbackText", "ratedStarsDisplay", "feedbackStatus"];
+      ids.forEach(id => {
+        let el = document.getElementById(id);
+        if(el) el.innerText = "";
+      });
+
+      document.getElementById("issueImageWrapper").style.display = "none";
+      document.getElementById("completedImageWrapper").style.display = "none";
+      document.getElementById("feedbackSection").classList.add("hidden");
+      document.getElementById("feedbackFormArea").classList.add("hidden");
+      document.getElementById("feedbackDisplayArea").classList.add("hidden");
+      
+      const feedbackComment = document.getElementById("feedbackComment");
+      const submitBtn = document.getElementById("submitFeedbackBtn");
+      feedbackComment.value = "";
+      feedbackComment.disabled = false;
+      submitBtn.disabled = false;
+      submitBtn.innerText = "Submit Feedback";
+      
+      selectedRating = 0;
+      updateStarUI(0);
+
+      // Resetting corrected Iframe IDs
+      document.getElementById("comp_issueFrame").src = "";
+      document.getElementById("comp_doneFrame").src = "";
+      
+      currentLat = null;
+      currentLon = null;
+
+      if (processingInterval) {
+        clearInterval(processingInterval);
+        processingInterval = null;
+      }
+    }
+
+    window.validateTicketID = function() {
+      const ticketID = document.getElementById("ticketIDInput").value.trim();
+      const statusBox = document.getElementById("statusDisplay");
+      const detailsBox = document.getElementById("ticketDetails");
+      const trackBtn = document.getElementById("trackBtn");
+
+      if (!ticketID) { 
+        statusBox.style.color = "red";
+        statusBox.innerText = "Please enter a Ticket ID."; 
+        return false; 
+      }
+      
+      clearDetails();
+      globalTicketID = ticketID;
+      trackBtn.disabled = true;
+
+      let dots = 0;
+      statusBox.style.color = "#047857";
+      processingInterval = setInterval(() => {
+        dots = (dots + 1) % 4;
+        statusBox.innerText = "Synchronizing with Server" + ".".repeat(dots);
+      }, 400);
+
+      google.script.run
+        .withSuccessHandler(function (response) {
+          clearInterval(processingInterval);
+          processingInterval = null;
+          trackBtn.disabled = false;
+          statusBox.innerText = "";
+          if (response.error) {
+            statusBox.style.color = "red";
+            statusBox.innerText = response.error;
+            detailsBox.classList.add("hidden");
+          } else {
+            displayTicketDetails(response);
+          }
+        })
+        .withFailureHandler(function (err) {
+          clearInterval(processingInterval);
+          processingInterval = null;
+          trackBtn.disabled = false;
+          statusBox.style.color = "#e11d48";
+          statusBox.innerText = "System Error: " + (err.message || "Request failed");
+          detailsBox.classList.add("hidden");
+        })
+        .fetchTicketDetails(ticketID);
+
+      return false;
+    }
+
+    function displayTicketDetails(response) {
+      const detailsBox = document.getElementById("ticketDetails");
+      const finalMessageEl = document.getElementById("finalMessage");
+
+      detailsBox.classList.remove("hidden");
+      document.getElementById("ticketIdDisplay").innerText = response.TicketID || "N/A";
+      document.getElementById("assignedTimeDisplay").innerText = response.TimeStamp || "N/A";
+      document.getElementById("nameDisplay").innerText = response.Name || "Anonymous";
+      document.getElementById("contactDisplay").innerText = response["Phone Number"] || "N/A";
+      document.getElementById("regionDisplay").innerText = response.Region || "N/A";
+      document.getElementById("descriptionDisplay").innerText = response.Description || "No description provided.";
+
+      currentLat = (response.Latitude || "").toString().trim();
+      currentLon = (response.Longitude || "").toString().trim();
+
+      const statusUpper = (response.Status || "").toString().toUpperCase();
+      
+      // Update Original State Image
+      if (response["Issue Image Link"]) {
+        document.getElementById("comp_issueFrame").src = drivePreviewUrl(response["Issue Image Link"]);
+        document.getElementById("issueImageWrapper").style.display = "block";
+      }
+
+      if (statusUpper === "DONE") {
+        // Update Cleanup Proof Image
+        if (response["Completed Issue Link"]) {
+          document.getElementById("comp_doneFrame").src = drivePreviewUrl(response["Completed Issue Link"]);
+          document.getElementById("completedImageWrapper").style.display = "block";
+        }
+
+        document.getElementById("statusTicketDisplay").innerText = "Current Status: DONE";
+        document.getElementById("completionByDisplay").innerText = "Cleaned By: " + (response["Workers Involved"] || "Team Kolkata");
+        document.getElementById("completionTimeDisplay").innerText = "Resolution Time: " + (response["Completion Timestamp"] || "N/A");
+        finalMessageEl.innerText = "Resolution Complete. Thank you for your civic contribution to keep the city clean.";
+
+        // Feedback Logic
+        document.getElementById("feedbackSection").classList.remove("hidden");
+        const hasRating = response.Rating && response.Rating.toString().trim() !== "";
+        
+        if (!hasRating) {
+          document.getElementById("feedbackFormArea").classList.remove("hidden");
+        } else {
+          document.getElementById("feedbackDisplayArea").classList.remove("hidden");
+          const ratingVal = parseInt(response.Rating);
+          let starsHtml = "";
+          for(let i=0; i<5; i++) {
+            starsHtml += `<i class="fas fa-star ${i < ratingVal ? 'text-amber-400' : 'text-slate-300'}"></i>`;
+          }
+          document.getElementById("ratedStarsDisplay").innerHTML = starsHtml;
+          document.getElementById("citizenFeedbackText").innerText = response["Rating Description"] || "Not stated";
+        }
+      } else {
+        document.getElementById("statusTicketDisplay").innerText = "Current Status: OPEN - Update Pending";
+        finalMessageEl.innerText = "Ground workers have been notified. Please check back soon.";
+      }
+    }
+
+    window.submitFeedback = function() {
+      const feedbackStatus = document.getElementById("feedbackStatus");
+      const comment = document.getElementById("feedbackComment").value.trim();
+      const btn = document.getElementById("submitFeedbackBtn");
+      const feedbackComment = document.getElementById("feedbackComment");
+
+      if (selectedRating == 0) {
+        feedbackStatus.style.color = "red";
+        feedbackStatus.innerText = "Please select a star rating first.";
+        return;
+      }
+
+      btn.disabled = true;
+      feedbackComment.disabled = true;
+      btn.innerText = "Submitting...";
+      feedbackStatus.style.color = "green";
+      feedbackStatus.innerText = "Saving your feedback...";
+
+      google.script.run
+        .withSuccessHandler(function(msg) {
+          feedbackStatus.innerText = msg;
+          setTimeout(() => {
+            validateTicketID(); 
+          }, 1000);
+        })
+        .withFailureHandler(function(err) {
+          feedbackStatus.style.color = "red";
+          feedbackStatus.innerText = "Error: " + err;
+          btn.disabled = false;
+          feedbackComment.disabled = false;
+          btn.innerText = "Submit Feedback";
+        })
+        .saveFeedback(globalTicketID, selectedRating, comment);
+    };
+
+    window.loadPage = loadPage;
+    window.openInMaps = openInMaps;
+
+  })();
+</script>
+
+</body>
+
+</html>

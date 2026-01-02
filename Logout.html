@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<base target="_top">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Logout Confirmation</title>
+	<script src="https://cdn.tailwindcss.com"></script>
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body
+	class="bg-slate-50 font-sans min-h-screen flex items-center justify-center p-6 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-red-100 via-slate-50 to-blue-50">
+
+	<div class="max-w-md w-full text-center space-y-8">
+		<div class="space-y-2">
+			<h1 class="text-2xl font-black text-slate-800 uppercase tracking-tight drop-shadow-sm">
+				Smart Waste Report Management App
+			</h1>
+			<div class="h-1 w-16 bg-red-500 mx-auto rounded-full"></div>
+		</div>
+
+		<div class="bg-white p-8 md:p-10 rounded-3xl shadow-2xl border border-slate-100 transform transition-all">
+			<div class="w-20 h-20 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-6">
+				<i class="fas fa-sign-out-alt text-red-500 text-3xl"></i>
+			</div>
+
+			<h2 class="text-xl font-bold text-slate-800 mb-2">Confirm Logout</h2>
+			<p class="text-slate-500 text-sm mb-8 leading-relaxed">
+				Are you sure you want to end your session? You will need to login again to manage tasks.
+			</p>
+
+			<div class="flex flex-col sm:flex-row gap-4 w-full">
+				<button onclick="cancelLogout()"
+          class="flex-1 px-6 py-3.5 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold rounded-xl transition-all active:scale-95">
+          Cancel
+        </button>
+
+				<button onclick="confirmLogout()"
+          class="flex-1 px-6 py-3.5 bg-red-600 hover:bg-red-700 text-white font-bold rounded-xl shadow-lg shadow-red-200 transition-all active:scale-95">
+          Logout
+        </button>
+			</div>
+		</div>
+
+		<div class="space-y-1 opacity-60">
+			<p class="text-[10px] font-black uppercase tracking-widest text-slate-500">
+				© 2026 Code Alchemists | Smart Waste Report Management App
+			</p>
+		</div>
+	</div>
+
+	<script>
+		/**
+     * Loads a page via Google Apps Script server-side function
+     */
+    function loadPage(pageName) {
+      google.script.run.withSuccessHandler(function (html) {
+        document.open();
+        document.write(html);
+        document.close();
+      }).loadPage(pageName);
+    }
+
+    /**
+     * Returns the worker to the pending tasks dashboard
+     */
+    function cancelLogout() {
+      loadPage('WorkPending');
+    }
+
+    /**
+     * Clears all session data and returns to the landing page
+     */
+    function confirmLogout() {
+      // Precise removal of session keys
+      localStorage.removeItem('LOGGEDINUSER');
+      localStorage.removeItem('USER_REGION');
+
+      // Comprehensive clear for security compliance
+      Object.keys(localStorage).forEach(key => {
+        localStorage.removeItem(key);
+      });
+
+      // Redirect to the index page
+      loadPage('Index');
+    }
+	</script>
+</body>
+
+</html>
