@@ -11,12 +11,13 @@ function loadPage(pageName) {
 }
 
 
-// === CONSTANTS ===
-const SHEET_ID = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
-const REG_SHEET = "xxxxxxxxxx";
-const ISSUE_SHEET = "xxxxx";
-const IMAGE_FOLDER_ID = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
-const IMAGE_DONE_FOLDER = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
+// === CONSTANTS === 
+// For Security purposes, ids are not disclosed 
+const SHEET_ID = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"; // spreadsheet id to be pasted here
+const REG_SHEET = "xxxxxxxxxx"; // name of the sheet need to be pasted here which takes Registration details of Workers
+const ISSUE_SHEET = "xxxxx"; // name of the sheet need to be pasted here where issues/task appended
+const IMAGE_FOLDER_ID = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"; //drive link id to be pasted here for task pending
+const IMAGE_DONE_FOLDER = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"; //drive link id to be pasted here for task completed
 
 
 
@@ -110,4 +111,5 @@ function getDashboardStats() {
   } catch (e) {
     return { reported: "!", cleared: "!", pending: "!", avgTime: "0" };
   }
+
 }
