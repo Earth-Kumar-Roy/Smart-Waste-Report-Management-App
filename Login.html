@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<base target="_top">
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Worker Login | Smart Waste Management</title>
+	<script src="https://cdn.tailwindcss.com"></script>
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+
+<body
+	class="bg-slate-50 font-sans min-h-screen flex items-center justify-center p-4 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-blue-100 via-slate-50 to-emerald-50">
+
+	<div
+		class="max-w-md w-full bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden transform transition-all duration-500 hover:shadow-emerald-100">
+
+		<div class="bg-emerald-700 p-8 text-center text-white relative">
+			<button onclick="loadPage('Index')" class="absolute top-4 left-4 bg-white/10 hover:bg-white/20 w-8 h-8 rounded-lg flex items-center justify-center transition-colors border border-white/10" title="Back to Home">
+        <i class="fas fa-home text-xs"></i>
+      </button>
+
+			<div class="absolute top-4 right-4 opacity-20 text-4xl">
+				<i class="fas fa-shield-alt"></i>
+			</div>
+			<h2 class="text-2xl font-black tracking-tight mb-2 uppercase">Worker's Portal</h2>
+			<p class="text-emerald-100 text-sm font-medium opacity-90">Smart Waste Report Management App</p>
+		</div>
+
+		<div class="p-8 space-y-5">
+			<p class="text-slate-500 text-center text-sm mb-6">Enter your authorized credentials to access the
+				dashboard.</p>
+
+			<div class="space-y-4">
+				<div class="relative">
+					<span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
+            <i class="fas fa-user"></i>
+          </span>
+					<input type="text" id="username" placeholder="Username or Email"
+            class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all">
+        </div>
+
+					<div class="relative">
+						<span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
+            <i class="fas fa-lock"></i>
+          </span>
+						<input type="password" id="password" placeholder="Password"
+            class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all">
+        </div>
+					</div>
+
+					<div class="flex items-start gap-3 bg-slate-50 p-3 rounded-lg border border-slate-100">
+						<input type="checkbox" id="agreeCheckbox" class="mt-1 w-4 h-4 text-emerald-600 border-slate-300 rounded focus:ring-emerald-500 cursor-pointer">
+						<label for="agreeCheckbox" class="text-xs text-slate-600 leading-tight">
+          I agree to abide by all 
+          <a href="https://sites.google.com/view/ekr1/smart-waste-report-management-app/user-agreement" target="_blank" class="text-emerald-700 font-bold hover:underline">Terms and Conditions</a> 
+        </label>
+					</div>
+
+					<button id="loginBtn" onclick="verify()" disabled
+        class="w-full py-4 bg-emerald-700 hover:bg-emerald-800 disabled:bg-slate-300 text-white font-bold rounded-xl shadow-lg shadow-emerald-700/20 active:scale-95 transition-all duration-200 uppercase tracking-wider text-sm">
+        Sign In
+      </button>
+
+					<div id="msg" class="text-center text-sm font-bold min-h-[20px] transition-colors duration-300">
+					</div>
+
+					<div class="flex justify-between items-center text-sm border-t border-slate-100 pt-6">
+						<a onclick="loadPage('Registration')"
+							class="text-emerald-700 font-bold cursor-pointer hover:text-emerald-500 transition">Create
+							Account</a>
+						<span class="text-slate-300">|</span>
+						<a onclick="loadPage('ForgotPass')"
+							class="text-slate-500 font-medium cursor-pointer hover:text-emerald-700 transition">Forgot
+							Password?</a>
+					</div>
+				</div>
+
+				<div class="bg-slate-50 p-6 border-t border-slate-100">
+					<div class="flex gap-3">
+						<div class="text-emerald-600 mt-1"><i class="fas fa-info-circle"></i></div>
+						<p class="text-[11px] text-slate-500 leading-relaxed italic">
+							<strong>Security Note:</strong> Backend verification typically takes 2–5 seconds. Please do
+							not refresh the page during processing.
+						</p>
+					</div>
+					<footer class="mt-4 text-center text-[10px] text-slate-400 font-medium uppercase tracking-widest">
+						© 2026 Code Alchemists | Smart Waste Report Management App
+					</footer>
+				</div>
+			</div>
+
+			<script>
+				(function() {
+      const loginBtn = document.getElementById("loginBtn");
+      const agreeCheckbox = document.getElementById("agreeCheckbox");
+
+      // Enable / disable login button
+      agreeCheckbox.addEventListener("change", function() {
+        loginBtn.disabled = !this.checked;
+      });
+
+      // Page loader
+      window.loadPage = function(pageName) {
+        google.script.run.withSuccessHandler(html => {
+          document.open();
+          document.write(html);
+          document.close();
+        }).loadPage(pageName);
+      };
+
+      // Login verification
+      window.verify = function() {
+        const inputUser = document.getElementById("username").value.trim();
+        const password = document.getElementById("password").value.trim();
+        const msg = document.getElementById("msg");
+        const loginBtn = document.getElementById("loginBtn");
+
+        msg.textContent = "";
+        msg.className = "text-center text-sm font-bold min-h-[20px]";
+
+        if (!inputUser || !password) {
+          msg.textContent = "Please enter all fields.";
+          msg.classList.add("text-red-600");
+          return;
+        }
+
+        if (!agreeCheckbox.checked) {
+          msg.textContent = "You must agree to the Terms.";
+          msg.classList.add("text-red-600");
+          return;
+        }
+
+        // Disable login button during processing
+        loginBtn.disabled = true;
+        const originalText = loginBtn.innerText;
+
+        // Dot animation
+        msg.classList.add("text-emerald-700");
+        let dots = 0;
+        const dotInterval = setInterval(() => {
+          dots = (dots + 1) % 4;
+          msg.textContent = "Authenticating Credentials" + ".".repeat(dots);
+        }, 400);
+
+        google.script.run
+          .withSuccessHandler(res => {
+            clearInterval(dotInterval);
+            loginBtn.disabled = false;
+
+            if (res.valid === true && res.username) {
+              msg.textContent = "Access Granted. Redirecting...";
+              msg.classList.replace("text-emerald-700", "text-blue-700");
+              localStorage.setItem("LOGGEDINUSER", String(res.username));
+              localStorage.setItem("USER_REGION", res.region);
+
+              google.script.run.withSuccessHandler(html => {
+                document.open();
+                document.write(html);
+                document.close();
+              }).loadPage("WorkPending");
+            } else {
+              msg.textContent = "Authentication failed. Invalid credentials.";
+              msg.classList.replace("text-emerald-700", "text-red-600");
+            }
+          })
+          .withFailureHandler(err => {
+            clearInterval(dotInterval);
+            loginBtn.disabled = false;
+            msg.textContent = "System Error: " + (err.message || "Connection lost.");
+            msg.classList.replace("text-emerald-700", "text-red-600");
+          })
+          .loginUser(inputUser, password);
+      };
+    })();
+			</script>
+
+</body>
+
+</html>
