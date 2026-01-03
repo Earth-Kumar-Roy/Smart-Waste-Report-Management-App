@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<base target="_top">
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Reset Password | Smart Waste Management</title>
+	<script src="https://cdn.tailwindcss.com"></script>
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+	<style>
+		/* Required for script-based visibility toggling */
+		#otpSection,
+		#newPassSection {
+			display: none;
+		}
+	</style>
+</head>
+
+<body
+	class="bg-slate-50 font-sans min-h-screen flex items-center justify-center p-4 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-blue-100 via-slate-50 to-emerald-50">
+
+	<div
+		class="max-w-md w-full bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden transform transition-all duration-500">
+
+		<div class="bg-blue-700 p-8 text-center text-white relative">
+			<div class="absolute top-4 right-4 opacity-20 text-4xl text-white">
+				<i class="fas fa-key"></i>
+			</div>
+			<h2 class="text-2xl font-black tracking-tight mb-2 uppercase italic">Account Recovery</h2>
+			<p class="text-blue-100 text-sm font-medium opacity-90">Smart Waste Report Management App</p>
+		</div>
+
+		<div class="p-8 space-y-5">
+			<p class="text-slate-600 text-center text-sm font-semibold mb-6">Reset your password via registered email.
+			</p>
+
+			<div id="emailSection" class="space-y-4">
+				<div class="relative">
+					<span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
+            <i class="fas fa-envelope"></i>
+          </span>
+					<input type="email" id="userEmail" placeholder="Enter your registered Email" required
+            class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 transition-all">
+        </div>
+					<button id="sendOtpBtn"
+          class="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-lg shadow-blue-700/20 active:scale-95 transition-all uppercase tracking-wider text-sm">
+          Send Verification OTP
+        </button>
+				</div>
+
+				<div id="otpSection" class="space-y-4">
+					<div class="relative">
+						<span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
+            <i class="fas fa-shield-alt"></i>
+          </span>
+						<input type="text" id="otp" placeholder="Enter 6-Digit OTP"
+            class="w-full pl-10 pr-4 py-3 bg-slate-50 border-2 border-yellow-400 rounded-lg outline-none focus:ring-2 focus:ring-yellow-500 text-center tracking-widest font-bold">
+        </div>
+						<div class="flex flex-col gap-2">
+							<button id="verifyBtn"
+            class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl shadow-md transition-all uppercase tracking-wider text-sm">
+            Verify OTP
+          </button>
+							<button id="resendBtn"
+            class="w-full py-2 bg-yellow-500 hover:bg-yellow-600 text-white font-semibold rounded-lg transition-all text-xs">
+            Resend OTP
+          </button>
+						</div>
+					</div>
+
+					<div id="newPassSection" class="space-y-4">
+						<div class="relative">
+							<span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
+            <i class="fas fa-lock"></i>
+          </span>
+							<input type="password" id="newPass" placeholder="Enter New Password"
+            class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 transition-all">
+        </div>
+							<button id="changePassBtn"
+          class="w-full py-3 bg-blue-700 hover:bg-blue-800 text-white font-bold rounded-xl shadow-lg transition-all uppercase tracking-wider text-sm">
+          Update Password
+        </button>
+						</div>
+
+						<div id="status" class="text-center text-sm font-bold min-h-[20px] py-2"></div>
+
+						<div class="flex justify-center items-center text-sm border-t border-slate-100 pt-6">
+							<a id="loginNow" onclick="loadPage('Login')"
+								class="text-blue-700 font-bold cursor-pointer hover:underline flex items-center gap-2">
+								<i class="fas fa-arrow-left text-xs"></i> Return to Login Now
+							</a>
+						</div>
+					</div>
+
+					<div class="bg-slate-50 p-6 border-t border-slate-100">
+						<footer class="text-center text-[10px] text-slate-400 font-medium uppercase tracking-widest">
+							© 2026 Code Alchemists | Smart Waste Report Management App
+						</footer>
+					</div>
+				</div>
+
+				<script>
+					(function () {
+      // Namespace on window to hold timers across reloads and to allow cleanup
+      if (!window._forgotPass) window._forgotPass = {};
+      const ns = window._forgotPass;
+
+      // Clear previous timer if exists (important for multi-load)
+      if (ns.resendTimer) {
+        clearInterval(ns.resendTimer);
+        ns.resendTimer = null;
+      }
+
+      // Helper
+      function byId(id) { return document.getElementById(id); }
+
+      // Expose loadPage globally (preserve existing behaviour)
+      function loadPage(pageName) {
+        google.script.run.withSuccessHandler(function (html) {
+          document.open();
+          document.write(html);
+          document.close();
+        }).loadPage(pageName);
+      }
+      window.loadPage = loadPage;
+
+      // UI state reset on each load
+      function resetUI() {
+        const sendBtn = byId('sendOtpBtn');
+        const otpSection = byId('otpSection');
+        const newPassSection = byId('newPassSection');
+        const resendBtn = byId('resendBtn');
+        const status = byId('status');
+
+        if (sendBtn) sendBtn.style.display = 'block';
+        if (otpSection) otpSection.style.display = 'none';
+        if (newPassSection) newPassSection.style.display = 'none';
+        if (resendBtn) {
+          resendBtn.style.display = 'none';
+          resendBtn.disabled = false;
+          resendBtn.innerText = 'Resend OTP';
+        }
+        if (status) {
+          status.innerText = '';
+          status.classList.remove('processing');
+        }
+        // clear fields
+        if (byId('userEmail')) byId('userEmail').value = '';
+        if (byId('otp')) byId('otp').value = '';
+        if (byId('newPass')) byId('newPass').value = '';
+
+        // clear ns state
+        ns.email = '';
+        if (ns.resendTimer) { clearInterval(ns.resendTimer); ns.resendTimer = null; }
+        ns.countdown = 0;
+      }
+
+      // Processing indicator
+      function setProcessing(state) {
+        const statusEl = byId("status");
+        if (!statusEl) return;
+        if (state) {
+          statusEl.innerText = "Processing...";
+          statusEl.classList.add("processing");
+        } else {
+          statusEl.classList.remove("processing");
+        }
+      }
+
+      // sendOtp handler
+      function sendOtpHandler() {
+        const emailEl = byId('userEmail');
+        if (!emailEl) return;
+        const email = String(emailEl.value || '').trim();
+        if (!email) { byId('status').innerText = "Enter your email"; return; }
+
+        ns.email = email;
+        setProcessing(true);
+        byId('sendOtpBtn').disabled = true;
+
+        google.script.run.withSuccessHandler(function (res) {
+          setProcessing(false);
+          byId('status').innerText = res && res.msg ? res.msg : '';
+          if (res && res.success) {
+            byId('sendOtpBtn').style.display = 'none';
+            byId('otpSection').style.display = 'block';
+            startResendTimer();
+          } else {
+            byId('sendOtpBtn').disabled = false;
+          }
+        }).forgotPassword(email);
+      }
+
+      // resendOtp handler
+      function resendOtpHandler() {
+        if (!ns.email) return;
+        const resendBtn = byId('resendBtn');
+        if (resendBtn) resendBtn.disabled = true;
+        setProcessing(true);
+        google.script.run.withSuccessHandler(function (res) {
+          setProcessing(false);
+          byId('status').innerText = res && res.msg ? res.msg : '';
+          if (res && res.success) startResendTimer();
+          else if (resendBtn) resendBtn.disabled = false;
+        }).forgotPassword(ns.email);
+      }
+
+      // start resend timer
+      function startResendTimer() {
+        const resendBtn = byId('resendBtn');
+        if (!resendBtn) return;
+        // clear existing
+        if (ns.resendTimer) { clearInterval(ns.resendTimer); ns.resendTimer = null; }
+
+        let countdown = 90;
+        resendBtn.style.display = 'block';
+        resendBtn.disabled = true;
+        resendBtn.innerText = `Resend OTP (${countdown}s)`;
+
+        ns.resendTimer = setInterval(() => {
+          countdown--;
+          resendBtn.innerText = `Resend OTP (${countdown}s)`;
+          if (countdown <= 0) {
+            clearInterval(ns.resendTimer);
+            ns.resendTimer = null;
+            resendBtn.innerText = 'Resend OTP';
+            resendBtn.disabled = false;
+          }
+        }, 1000);
+      }
+
+      // verify otp handler
+      function verifyOtpHandler() {
+        const otp = String(byId('otp').value || '').trim();
+        if (!otp) { byId('status').innerText = "Enter OTP"; return; }
+        setProcessing(true);
+        google.script.run.withSuccessHandler(function (res) {
+          setProcessing(false);
+          byId('status').innerText = res && res.msg ? res.msg : '';
+          if (res && res.success) {
+            byId('otpSection').style.display = 'none';
+            byId('newPassSection').style.display = 'block';
+            const resendBtn = byId('resendBtn');
+            if (resendBtn) resendBtn.style.display = 'none';
+            if (ns.resendTimer) { clearInterval(ns.resendTimer); ns.resendTimer = null; }
+          }
+        }).ForgotPassVerOTP(ns.email, otp);
+      }
+
+      // change password handler
+      function changePasswordHandler() {
+        const newPass = String(byId('newPass').value || '').trim();
+        const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d).{6,}$/;
+        if (!passwordPattern.test(newPass)) {
+          byId('status').innerText = "Password should be at least 6 characters and alphanumeric";
+          return;
+        }
+        setProcessing(true);
+        google.script.run.withSuccessHandler(function (res) {
+          setProcessing(false);
+          byId('status').innerText = res && res.msg ? res.msg : '';
+          if (res && res.success) {
+            byId('newPassSection').style.display = 'none';
+            byId('userEmail').value = '';
+            byId('sendOtpBtn').style.display = 'block';
+            byId('status').innerText = "Password changed successfully! Login to continue.";
+          }
+        }).changePassword(ns.email, newPass);
+      }
+
+      // Attach handlers idempotently (remove previous listeners)
+      function attachHandlers() {
+        // sendOtpBtn
+        const sendBtn = byId('sendOtpBtn');
+        if (sendBtn) {
+          const newBtn = sendBtn.cloneNode(true);
+          sendBtn.parentNode.replaceChild(newBtn, sendBtn);
+          newBtn.addEventListener('click', sendOtpHandler);
+        }
+
+        // resendBtn
+        const resendBtn = byId('resendBtn');
+        if (resendBtn) {
+          const newRes = resendBtn.cloneNode(true);
+          resendBtn.parentNode.replaceChild(newRes, resendBtn);
+          newRes.addEventListener('click', resendOtpHandler);
+        }
+
+        // verifyBtn
+        const verifyBtn = byId('verifyBtn');
+        if (verifyBtn) {
+          const newV = verifyBtn.cloneNode(true);
+          verifyBtn.parentNode.replaceChild(newV, verifyBtn);
+          newV.addEventListener('click', verifyOtpHandler);
+        }
+
+        // changePassBtn
+        const cpBtn = byId('changePassBtn');
+        if (cpBtn) {
+          const newC = cpBtn.cloneNode(true);
+          cpBtn.parentNode.replaceChild(newC, cpBtn);
+          newC.addEventListener('click', changePasswordHandler);
+        }
+
+        // Login Now link
+        const loginNow = byId('loginNow');
+        if (loginNow) {
+          const newL = loginNow.cloneNode(true);
+          loginNow.parentNode.replaceChild(newL, loginNow);
+          newL.addEventListener('click', function () { loadPage('Login'); });
+        }
+      }
+
+      // Initialize: reset UI and attach handlers
+      function init() {
+        resetUI();
+        attachHandlers();
+      }
+
+      // Run init when DOM ready (idempotent)
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+      } else {
+        setTimeout(init, 0);
+      }
+
+      // Expose for debugging if needed
+      ns.init = init;
+      ns.startResendTimer = startResendTimer;
+
+    })();
+				</script>
+</body>
+
+</html>
