@@ -12,7 +12,7 @@ function loadPage(pageName) {
 
 
 // === CONSTANTS === 
-// For Security purposes, ids are not disclosed 
+// === For Security purposes, ids are not disclosed (IMPORTANT)
 const SHEET_ID = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"; // spreadsheet id to be pasted here
 const REG_SHEET = "xxxxxxxxxx"; // name of the sheet need to be pasted here which takes Registration details of Workers
 const ISSUE_SHEET = "xxxxx"; // name of the sheet need to be pasted here where issues/task appended
@@ -113,3 +113,4 @@ function getDashboardStats() {
   }
 
 }
+
