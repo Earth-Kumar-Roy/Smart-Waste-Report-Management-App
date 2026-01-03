@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<base target="_top">
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Sign Up | Smart Waste Management</title>
+	<script src="https://cdn.tailwindcss.com"></script>
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+	<style>
+		/* Required for script-based visibility toggling */
+		#otpSection,
+		#afterOtp {
+			display: none;
+		}
+	</style>
+</head>
+
+<body
+	class="bg-slate-50 font-sans min-h-screen flex items-center justify-center p-4 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-blue-100 via-slate-50 to-emerald-50">
+
+	<div
+		class="max-w-md w-full bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden transform transition-all duration-500">
+
+		<div class="bg-emerald-700 p-8 text-center text-white relative">
+			<div class="absolute top-4 right-4 opacity-20 text-4xl text-white">
+				<i class="fas fa-user-plus"></i>
+			</div>
+			<h2 class="text-2xl font-black tracking-tight mb-2 uppercase">Worker Registration</h2>
+			<p class="text-emerald-100 text-sm font-medium opacity-90">Smart Waste Report Management App</p>
+		</div>
+
+		<div class="p-8 space-y-5">
+			<p class="text-slate-600 text-center text-sm font-semibold mb-6 italic">Initiative to keep the city clean:
+				"Clean City, Green City"</p>
+
+			<div id="initialStep" class="space-y-4">
+				<div class="relative">
+					<span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
+            <i class="fas fa-envelope"></i>
+          </span>
+					<input type="email" id="email" placeholder="Enter Official Email" required
+            class="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-emerald-500 transition-all">
+        </div>
+
+					<div class="flex items-start gap-3 bg-slate-50 p-3 rounded-lg border border-slate-100">
+						<input type="checkbox" id="agreeCheckbox" class="mt-1 w-4 h-4 text-emerald-600 border-slate-300 rounded focus:ring-emerald-500 cursor-pointer">
+						<label for="agreeCheckbox" class="text-xs text-slate-600 leading-tight">
+            I agree to abide by all 
+            <a href="https://sites.google.com/view/ekr1/smart-waste-report-management-app/user-agreement" target="_blank" class="text-emerald-700 font-bold hover:underline">Terms and Conditions</a> 
+          </label>
+					</div>
+
+					<button id="sendOtpBtn" onclick="sendOtp()"
+          class="w-full py-3 bg-emerald-700 hover:bg-emerald-800 text-white font-bold rounded-xl shadow-lg shadow-emerald-700/20 active:scale-95 transition-all uppercase tracking-wider text-sm">
+          Send Verification OTP
+        </button>
+				</div>
+
+				<div id="otpSection" class="space-y-4 border-t border-slate-100 pt-4">
+					<div class="relative">
+						<span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400">
+            <i class="fas fa-key"></i>
+          </span>
+						<input type="text" id="otp" placeholder="Enter OTP"
+            class="w-full pl-10 pr-4 py-3 bg-slate-50 border-2 border-yellow-400 rounded-lg outline-none text-center font-bold tracking-widest focus:ring-2 focus:ring-yellow-500">
+        </div>
+						<div class="flex flex-col gap-2">
+							<button id="verifyBtn" onclick="verifyOtp()"
+            class="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-md transition-all uppercase tracking-wider text-sm">
+            Verify OTP
+          </button>
+							<button id="resendBtn" onclick="resendOtp()"
+            class="w-full py-2 bg-yellow-500 hover:bg-yellow-600 text-white font-semibold rounded-lg transition-all text-xs">
+            Resend OTP
+          </button>
+						</div>
+					</div>
+
+					<div id="afterOtp" class="space-y-4 border-t border-slate-100 pt-4">
+						<div class="grid grid-cols-1 gap-4">
+							<input type="text" id="name" placeholder="Full Name" required
+            class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-emerald-500 transition-all text-sm">
+
+							<input type="tel" id="phone" placeholder="Phone Number" required
+            class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-emerald-500 transition-all text-sm">
+
+							<select id="region" required
+            class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-emerald-500 transition-all text-sm text-slate-600">
+            <option value="">Select Working Region</option>
+            <option>Esplanade</option><option>Sealdah</option><option>Howrah</option>
+            <option>Bidhannagar</option><option>Baranagar</option><option>Dumdum</option>
+            <option>Tollygunge</option><option>Khidirpur</option><option>Newtown</option>
+            <option>Gobra</option>
+          </select>
+
+							<input type="text" id="username" placeholder="Create Unique Username" required oninput="validateUsername(this)"
+            class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-emerald-500 transition-all text-sm">
+
+							<input type="password" id="password" placeholder="Create Strong Password" required
+            class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg outline-none focus:ring-2 focus:ring-emerald-500 transition-all text-sm">
+        </div>
+
+							<button onclick="createAccount()"
+          class="w-full py-4 bg-emerald-700 hover:bg-emerald-800 text-white font-black rounded-xl shadow-xl active:scale-95 transition-all uppercase tracking-widest">
+          Complete Registration
+        </button>
+						</div>
+
+						<div id="status" class="text-center text-sm font-bold min-h-[20px] py-1 text-emerald-700"></div>
+
+						<div class="flex justify-center items-center text-sm border-t border-slate-100 pt-6">
+							<a onclick="loadPage('Login')"
+								class="text-emerald-700 font-bold cursor-pointer hover:underline flex items-center gap-2">
+								Already Registered? Login Here
+							</a>
+						</div>
+					</div>
+
+					<div class="bg-slate-50 p-6 border-t border-slate-100">
+						<footer class="text-center text-[10px] text-slate-400 font-medium uppercase tracking-widest">
+							© 2026 Code Alchemists | Smart Waste Report Management App
+						</footer>
+					</div>
+				</div>
+
+				<script>
+					let resendTimer;
+
+    function loadPage(pageName) {
+      google.script.run.withSuccessHandler(function (html) {
+        document.open();
+        document.write(html);
+        document.close();
+      }).loadPage(pageName);
+    }
+
+    function validateUsername(field) {
+      let value = field.value;
+
+      // convert capitals → lowercase
+      value = value.toLowerCase();
+
+      // allow only a-z, 0-9, . and _
+      const allowed = /^[a-z0-9._]*$/;
+      if (!allowed.test(value)) {
+        // invalid character typed → revert to previous valid value
+        field.value = field.getAttribute("data-last") || "";
+        return;
+      }
+
+      // prevent username being only numbers
+      if (/^\d+$/.test(value)) {
+        field.value = field.getAttribute("data-last") || "";
+        return;
+      }
+
+      field.value = value;
+      field.setAttribute("data-last", value);
+
+      // show error if below 4 characters
+      if (value.length > 0 && value.length < 4) {
+        document.getElementById("status").innerText =
+          "Username must be at least 4 characters, lowercase, and only contain letters, numbers, . or _";
+      } else {
+        document.getElementById("status").innerText = "";
+      }
+    }
+
+    function setProcessing(state) {
+      const status = document.getElementById("status");
+      if (state) { status.innerText = "Processing..."; status.classList.add("processing"); }
+      else status.classList.remove("processing");
+    }
+
+    function sendOtp() {
+      const email = document.getElementById("email").value.trim();
+      if (!email) { document.getElementById("status").innerText = "Enter Email"; return; }
+      document.getElementById("sendOtpBtn").disabled = true;
+      setProcessing(true);
+
+      google.script.run.withSuccessHandler(res => {
+        setProcessing(false);
+        document.getElementById("status").innerText = res.msg;
+        if (res.success) {
+          document.getElementById("otpSection").style.display = "block";
+          document.getElementById("sendOtpBtn").style.display = "none";
+          startResendTimer();
+        } else {
+          document.getElementById("sendOtpBtn").disabled = false;
+        }
+      }).sendOtp(email);
+    }
+
+    function resendOtp() {
+      const email = document.getElementById("email").value.trim();
+      if (!email) return;
+      document.getElementById("resendBtn").disabled = true;
+      setProcessing(true);
+
+      google.script.run.withSuccessHandler(res => {
+        setProcessing(false);
+        document.getElementById("status").innerText = res.msg;
+        if (res.success) startResendTimer();
+        else document.getElementById("resendBtn").disabled = false;
+      }).sendOtp(email);
+    }
+
+    function startResendTimer() {
+      let countdown = 90;
+      const resendBtn = document.getElementById("resendBtn");
+      resendBtn.style.display = "block";
+      resendBtn.disabled = true;
+      clearInterval(resendTimer);
+      resendBtn.innerText = "Resend OTP (90s)";
+      resendTimer = setInterval(() => {
+        countdown--;
+        resendBtn.innerText = `Resend OTP (${countdown}s)`;
+        if (countdown <= 0) {
+          clearInterval(resendTimer);
+          resendBtn.innerText = "Resend OTP";
+          resendBtn.disabled = false;
+        }
+      }, 1000);
+    }
+
+    function verifyOtp() {
+      const email = document.getElementById("email").value.trim();
+      const otp = document.getElementById("otp").value.trim();
+      if (!otp) { document.getElementById("status").innerText = "Enter OTP"; return; }
+      setProcessing(true);
+
+      google.script.run.withSuccessHandler(res => {
+        setProcessing(false);
+        document.getElementById("status").innerText = res.msg;
+        if (res.success) {
+          document.getElementById("otpSection").style.display = "none";
+          document.getElementById("afterOtp").style.display = "block";
+          document.getElementById("resendBtn").style.display = "none";
+          document.getElementById("email").disabled = true;
+        }
+      }).verifyOtp(email, otp);
+    }
+
+    function createAccount() {
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const region = document.getElementById("region").value.trim();
+      const username = document.getElementById("username").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      if (!name || !email || !phone || !region || !username || !password) {
+        document.getElementById("status").innerText = "All fields required";
+        return;
+      }
+
+      const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d).{6,}$/;
+      if (!passwordPattern.test(password)) {
+        document.getElementById("status").innerText =
+          "Password should be at least 6 characters and alphanumeric";
+        return;
+      }
+
+      setProcessing(true);
+
+      google.script.run.withSuccessHandler(res => {
+        setProcessing(false);
+        document.getElementById("status").innerText = res.msg;
+        if (res.success) {
+          document.querySelectorAll(".form-box input, .form-box select").forEach(el => {
+            el.value = "";
+            el.disabled = false;
+          });
+          document.getElementById("sendOtpBtn").disabled = false;
+          document.getElementById("sendOtpBtn").style.display = "block";
+          document.getElementById("otpSection").style.display = "none";
+          document.getElementById("afterOtp").style.display = "none";
+          document.getElementById("resendBtn").style.display = "none";
+        }
+      }).createAccount(name, email, phone, region, username, password);
+    }
+
+    const sendOtpBtn = document.getElementById("sendOtpBtn");
+    const agreeCheckbox = document.getElementById("agreeCheckbox");
+
+    // Initialize state
+    sendOtpBtn.disabled = !agreeCheckbox.checked;
+
+    // Toggle button based on checkbox
+    agreeCheckbox.addEventListener("change", function () {
+      sendOtpBtn.disabled = !this.checked;
+    });
+
+
+				</script>
+</body>
+
+</html>
