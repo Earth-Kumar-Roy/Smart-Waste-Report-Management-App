@@ -8,17 +8,17 @@ The **Smart Waste Report Management App** is a full-spectrum digital tool design
 
 ## 👥 Team: CODE ALCHEMISTS
 * **Earth Kumar Roy** (Team Lead)
-* **Antarjita Biswas**
+* **Anterjita Biswas**
 * **Rahul Ghosh**
 
 ---
 
-## ❌ The Problem
+##  The Problem
 * **Slow & Fragmented Reporting:** Traditional complaint systems are often offline or involve tedious manual processes.
 * **Lack of Accountability:** Citizens rarely receive updates, and there is no proof that a task was completed effectively.
 * **Location Confusion:** Text-based addresses in crowded or unplanned areas make it difficult for field workers to locate waste hotspots.
 
-## ✅ The Solution
+##  The Solution
 * **📍 Auto GPS Capture:** Pinpoints the exact location of the waste without requiring manual address entry.
 * **📸 Proof-of-Work Closure:** Tickets cannot be closed until the field worker uploads a "Cleanup Photo" for verification.
 * **🎯 Zone-Based Assignment:** Intelligent routing ensures workers only see tasks relevant to their specific assigned region.
@@ -48,7 +48,7 @@ The **Smart Waste Report Management App** is a full-spectrum digital tool design
 
 ---
 
-## 🌍 Demo Regions
+##  Demo Regions
 Currently configured for the following regions:
 `Esplanade` • `Sealdah` • `Howrah` • `Bidhannagar` • `Dum Dum` • `New Town` • `Garia` total 10 regions
 
