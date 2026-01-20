@@ -27,11 +27,11 @@
 
 		<div class="flex border-b border-slate-100">
 			<button onclick="loadPage('Index')" class="flex-1 py-3 text-xs font-bold text-slate-500 hover:bg-slate-50 hover:text-emerald-700 transition flex items-center justify-center gap-2 border-r border-slate-100">
-        <i class="fas fa-home"></i> Home
-      </button>
+                <i class="fas fa-home"></i> Home
+            </button>
 			<button onclick="loadPage('CheckStatus')" class="flex-1 py-3 text-xs font-bold text-slate-500 hover:bg-slate-50 hover:text-emerald-700 transition flex items-center justify-center gap-2">
-        <i class="fas fa-search-location"></i> Check Status
-      </button>
+                <i class="fas fa-search-location"></i> Check Status
+            </button>
 		</div>
 
 		<div class="p-6 md:p-8 space-y-5 text-gray-800">
@@ -39,17 +39,17 @@
 				<div class="relative">
 					<span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400 text-xs"><i class="fas fa-user"></i></span>
 					<input type="text" id="name" placeholder="Full Name" class="w-full pl-9 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-emerald-500 transition-all text-sm">
-        </div>
+                </div>
 					<div class="relative">
 						<span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400 text-xs"><i class="fas fa-phone"></i></span>
 						<input type="tel" id="mobile" placeholder="Mobile Number" class="w-full pl-9 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-emerald-500 transition-all text-sm">
-        </div>
+                </div>
 					</div>
 
 					<div class="relative">
 						<span class="absolute inset-y-0 left-0 pl-3 flex items-center text-slate-400 text-xs"><i class="fas fa-envelope"></i></span>
 						<input type="email" id="email" placeholder="Email Address" class="w-full pl-9 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-emerald-500 transition-all text-sm">
-      </div>
+            </div>
 
 						<div id="locationWrapper"
 							class="bg-emerald-50/50 p-4 rounded-2xl border border-emerald-100 space-y-3">
@@ -66,7 +66,7 @@
 							<div id="gpsInputs" class="grid grid-cols-2 gap-3">
 								<input type="text" id="latitude" placeholder="Latitude" readonly class="w-full px-4 py-2 bg-white border border-emerald-200 rounded-lg text-xs text-slate-500 cursor-not-allowed">
 								<input type="text" id="longitude" placeholder="Longitude" readonly class="w-full px-4 py-2 bg-white border border-emerald-200 rounded-lg text-xs text-slate-500 cursor-not-allowed">
-        </div>
+                </div>
 
 								<div id="manualInputs" class="hidden space-y-2">
 									<input type="text" id="address1" placeholder="Address Line 1 " class="w-full px-4 py-2 bg-white border border-orange-200 rounded-lg text-xs outline-none focus:ring-1 focus:ring-orange-400">
@@ -76,12 +76,12 @@
 								</div>
 
 								<select id="region" class="w-full px-4 py-3 bg-white border border-emerald-200 rounded-xl outline-none focus:ring-2 focus:ring-emerald-500 text-sm font-medium text-slate-700">
-          <option value="">Select Local Region</option>
-          <option>Esplanade</option><option>Sealdah</option><option>Howrah</option>
-          <option>Bidhannagar</option><option>Baranagar</option><option>Dumdum</option>
-          <option>Tollygunge</option><option>Khidirpur</option><option>Newtown</option>
-          <option>Gobra</option>
-        </select>
+                    <option value="">Select Local Region</option>
+                    <option>Esplanade</option><option>Sealdah</option><option>Howrah</option>
+                    <option>Bidhannagar</option><option>Baranagar</option><option>Dumdum</option>
+                    <option>Tollygunge</option><option>Khidirpur</option><option>Newtown</option>
+                    <option>Gobra</option>
+                </select>
 							</div>
 
 							<div class="space-y-1">
@@ -94,22 +94,23 @@
 
 							<div class="flex flex-col gap-2">
 								<label class="relative flex flex-col items-center justify-center w-full h-32 border-2 border-emerald-200 border-dashed rounded-2xl bg-emerald-50/30 cursor-pointer hover:bg-emerald-50 transition">
-          <div class="flex flex-col items-center justify-center pt-5 pb-6 text-gray-800">
-            <i class="fas fa-camera text-emerald-600 text-2xl mb-2"></i>
-            <p id="aiHint" class="text-xs text-emerald-700 font-black uppercase">Upload Site Photo</p>
-          </div>
-          <input type="file" id="image" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer" disabled>
-        </label>
+                    <div class="flex flex-col items-center justify-center pt-5 pb-6 text-gray-800">
+                        <i class="fas fa-camera text-emerald-600 text-2xl mb-2"></i>
+                        <p class="text-xs text-emerald-700 font-black uppercase">Upload Site Photo</p>
+                    </div>
+                    <input type="file" id="image" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer">
+                </label>
 								<div id="fileName" class="text-center text-[10px] text-slate-400 font-bold italic">No
 									proof selected</div>
 							</div>
 
 							<button onclick="submitIssue()" class="submit-btn w-full py-4 bg-emerald-700 hover:bg-emerald-800 text-white font-black rounded-2xl shadow-xl shadow-emerald-700/20 active:scale-95 transition-all uppercase tracking-widest text-sm">
-        Submit Report
-      </button>
+                Submit Report
+            </button>
 
 							<div id="status"
-								class="text-center text-xs font-black min-h-[16px] uppercase tracking-tighter"></div>
+								class="text-center text-xs font-black min-h-[16px] uppercase tracking-tighter text-emerald-700">
+							</div>
 						</div>
 
 						<div class="bg-slate-50 p-4 border-t border-slate-100">
@@ -119,123 +120,103 @@
 						</div>
 					</div>
 
-					<img id="aiCanvas" style="display:none;">
+					<script>
+						(function () {
+    "use strict";
 
-					<script type="module">
-						import { ImageClassifier, FilesetResolver } from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3";
+    let locationFetched = false;
+    let submitInterval = null;
 
-    (function () {
-      "use strict";
+    // FORCED LOCATION REQUEST AT START
+    // This executes immediately as the script is parsed to trigger the prompt
+    initLocationRequest();
 
-      let locationFetched = false;
-      let submitInterval = null;
-      let classifier;
-
-      async function initAI() {
-        try {
-          const vision = await FilesetResolver.forVisionTasks("https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3/wasm");
-          classifier = await ImageClassifier.createFromOptions(vision, {
-            baseOptions: { modelAssetPath: "https://storage.googleapis.com/mediapipe-models/image_classifier/efficientnet_lite0/float32/1/efficientnet_lite0.tflite" },
-            maxResults: 3
-          });
-          document.getElementById("image").disabled = false;
-          document.getElementById("aiHint").innerText = "Upload Site Photo (AI Ready)";
-        } catch (e) {
-          document.getElementById("image").disabled = false;
-        }
-      }
-
-      initAI();
-      initLocationRequest();
-
-      window.onload = function () {
+    window.onload = function () {
+        // UI Listeners
         const fileInput = document.getElementById("image");
-        const fileName = document.getElementById("fileName");
-        const status = document.getElementById("status");
-        const aiCanvas = document.getElementById("aiCanvas");
-
         fileInput.addEventListener("change", function () {
-          const file = this.files[0];
-          if (!file) return;
-
-          if (file.size > 3 * 1024 * 1024) {
-            alert("File size exceeds 3MB.");
-            this.value = "";
-            fileName.textContent = "No file chosen";
-            return;
-          }
-
-          const reader = new FileReader();
-          reader.onload = (ev) => {
-            aiCanvas.src = ev.target.result;
-            status.innerText = "Analyzing pixels...";
-            status.style.color = "#047857";
-
-            aiCanvas.onload = async () => {
-              const res = await classifier.classify(aiCanvas);
-              const labels = res.classifications[0].categories.map(x => x.categoryName.toLowerCase());
-              const isG = labels.some(l => /bottle|bag|can|waste|trash|plastic|wrapper|debris|junk|dirt|litter/.test(l));
-
-              if (isG) {
-                // Garbage Found: Display file name + status
-                fileName.textContent = "ATTACHED: " + file.name + " | GARBAGE DETECTED";
-                fileName.className = "text-center text-[10px] text-emerald-600 font-bold italic uppercase";
-                status.innerText = "Validation Successful | Ready to Submit";
-                status.style.color = "#047857";
-              } else {
-                // No Garbage Found: Reset input + display UI warning
-                fileInput.value = ""; 
-                fileName.textContent = "No proof selected";
-                fileName.className = "text-center text-[10px] text-slate-400 font-bold italic";
-                status.innerText = "NO GARBAGE DETECTED, UPLOAD A NEW IMAGE";
-                status.style.color = "#e11d48";
-              }
-            };
-          };
-          reader.readAsDataURL(file);
+            const file = this.files[0];
+            if (file) {
+                if (file.size > 3 * 1024 * 1024) {
+                    alert("File size exceeds 3MB.");
+                    this.value = "";
+                    document.getElementById("fileName").textContent = "No file chosen";
+                    return;
+                }
+                document.getElementById("fileName").textContent = "ATTACHED: " + file.name;
+                document.getElementById("fileName").classList.add("text-emerald-600");
+            }
         });
 
         document.getElementById("description").addEventListener("input", function () {
-          document.getElementById("charUsed").innerText = this.value.length;
+            document.getElementById("charUsed").innerText = this.value.length;
         });
-      };
+    };
 
-      function initLocationRequest() {
-        if (!navigator.geolocation) { switchToManual(); return; }
-        const locTimer = setTimeout(() => { if (!locationFetched) switchToManual(); }, 20000);
+    function initLocationRequest() {
+        if (!navigator.geolocation) {
+            switchToManual();
+            return;
+        }
+
+        // Set a 20-second timeout for manual switch
+        const locTimer = setTimeout(() => {
+            if (!locationFetched) switchToManual();
+        }, 20000);
+
         navigator.geolocation.getCurrentPosition(
-          pos => {
-            locationFetched = true;
-            clearTimeout(locTimer);
-            document.getElementById("latitude").value = pos.coords.latitude;
-            document.getElementById("longitude").value = pos.coords.longitude;
-            document.getElementById("locSpinner").classList.add("hidden");
-            document.getElementById("locLabel").innerText = "Location Captured Successfully";
-          },
-          err => { locationFetched = false; clearTimeout(locTimer); switchToManual(); },
-          { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
+            pos => {
+                locationFetched = true;
+                clearTimeout(locTimer);
+                document.getElementById("latitude").value = pos.coords.latitude;
+                document.getElementById("longitude").value = pos.coords.longitude;
+                document.getElementById("locSpinner").classList.add("hidden");
+                document.getElementById("locLabel").innerText = "Location Captured Successfully";
+            },
+            err => {
+                locationFetched = false;
+                clearTimeout(locTimer);
+                console.warn("Location error:", err.message);
+                switchToManual();
+            },
+            { 
+                enableHighAccuracy: true, 
+                timeout: 15000, 
+                maximumAge: 0 
+            }
         );
-      }
+    }
 
-      function switchToManual() {
+    function switchToManual() {
         const gpsInputs = document.getElementById("gpsInputs");
         const manualInputs = document.getElementById("manualInputs");
         const locLabel = document.getElementById("locLabel");
         const locSpinner = document.getElementById("locSpinner");
         const wrapper = document.getElementById("locationWrapper");
+
         if (gpsInputs) gpsInputs.classList.add("hidden");
         if (manualInputs) manualInputs.classList.remove("hidden");
         if (locSpinner) locSpinner.classList.add("hidden");
         if (locLabel) locLabel.innerText = "Manual Location Required";
+        
         if (wrapper) {
-          wrapper.classList.replace("bg-emerald-50/50", "bg-orange-50/50");
-          wrapper.classList.replace("border-emerald-100", "border-orange-100");
+            wrapper.classList.replace("bg-emerald-50/50", "bg-orange-50/50");
+            wrapper.classList.replace("border-emerald-100", "border-orange-100");
         }
-      }
+    }
 
-      window.submitIssue = function () {
+    function loadPage(page) {
+        google.script.run.withSuccessHandler(html => {
+            document.open();
+            document.write(html);
+            document.close();
+        }).loadPage(page);
+    }
+
+    function submitIssue() {
         const submitBtn = document.querySelector(".submit-btn");
         const statusEl = document.getElementById("status");
+
         const name = document.getElementById("name").value.trim();
         const email = document.getElementById("email").value.trim();
         const mobile = document.getElementById("mobile").value.trim();
@@ -244,18 +225,19 @@
         const imageFile = document.getElementById("image").files[0];
 
         let latVal, longVal;
+
         if (locationFetched) {
-          latVal = document.getElementById("latitude").value;
-          longVal = document.getElementById("longitude").value;
+            latVal = document.getElementById("latitude").value;
+            longVal = document.getElementById("longitude").value;
         } else {
-          latVal = document.getElementById("address1").value.trim();
-          longVal = document.getElementById("address2").value.trim();
+            latVal = document.getElementById("address1").value.trim();
+            longVal = document.getElementById("address2").value.trim();
         }
 
         if (!name || !email || !mobile || !region || !latVal || !longVal || !description || !imageFile) {
-          statusEl.innerText = "All fields and validated photo are mandatory";
-          statusEl.style.color = "#e11d48";
-          return;
+            statusEl.innerText = "All fields and location are mandatory";
+            statusEl.style.color = "#e11d48";
+            return;
         }
 
         submitBtn.disabled = true;
@@ -264,45 +246,43 @@
         let dots = 0;
         statusEl.style.color = "#047857";
         submitInterval = setInterval(() => {
-          dots = (dots + 1) % 4;
-          statusEl.innerText = "Submitting Issue" + ".".repeat(dots);
+            dots = (dots + 1) % 4;
+            statusEl.innerText = "Submitting Issue" + ".".repeat(dots);
         }, 500);
 
         const reader = new FileReader();
         reader.onload = function (e) {
-          google.script.run
-            .withSuccessHandler(res => {
-              clearInterval(submitInterval);
-              statusEl.innerText = res.msg;
-              submitBtn.disabled = false;
-              submitBtn.classList.replace("bg-slate-300", "bg-emerald-700");
-            })
-            .withFailureHandler(err => {
-              clearInterval(submitInterval);
-              statusEl.innerText = "Error: " + err.message;
-              submitBtn.disabled = false;
-              submitBtn.classList.replace("bg-slate-300", "bg-emerald-700");
-            })
-            .raiseIssue({
-              name, email, mobile, region,
-              latitude: latVal,
-              longitude: longVal,
-              description,
-              image: e.target.result.split(",")[1],
-              imageName: imageFile.name
-            });
+            const base64Image = e.target.result.split(",")[1];
+            google.script.run
+                .withSuccessHandler(res => {
+                    clearInterval(submitInterval);
+                    statusEl.innerText = res.msg;
+                    submitBtn.disabled = false;
+                    submitBtn.classList.replace("bg-slate-300", "bg-emerald-700");
+                })
+                .withFailureHandler(err => {
+                    clearInterval(submitInterval);
+                    statusEl.innerText = "Error: " + err.message;
+                    submitBtn.disabled = false;
+                    submitBtn.classList.replace("bg-slate-300", "bg-emerald-700");
+                })
+                .raiseIssue({
+                    name, email, mobile, region,
+                    latitude: latVal,
+                    longitude: longVal,
+                    description,
+                    image: base64Image,
+                    imageName: imageFile.name
+                });
         };
         reader.readAsDataURL(imageFile);
-      }
+    }
 
-      window.loadPage = (p) => {
-        google.script.run.withSuccessHandler(h => {
-          document.open(); document.write(h); document.close();
-        }).loadPage(p);
-      };
+    window.loadPage = loadPage;
+    window.submitIssue = submitIssue;
 
-    })();
-  </script>
+})();
+					</script>
 </body>
 
 </html>
