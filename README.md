@@ -64,7 +64,7 @@ Currently configured for the following regions:
 ## 🔗 Project Links
 * **GitHub:** [Smart-Waste-Report-Management-App](https://github.com/Earth-Kumar-Roy/Smart-Waste-Report-Management-App)
 * **Demo Video:** [Watch on Google Drive](https://drive.google.com/file/d/1APuB9wCxgs0uVIroczjeX2N_irSELsPe/view)
-* **Live MVP:** [Link to Google Script Web App](https://script.google.com/macros/s/AKfycbwxGLvtklFAqX5tlYCsnzuwAahPLONPv1wUEnuJGBguA8h21OhdSgiEJQeXmXl-5LU/exec)
+* **Live MVP:** [Link to Google Script Web App](https://script.google.com/macros/s/AKfycbwu0jRK9f-fHF1AkkH1TOzie5IFCoxNjHZEvOaj0GK1rQ9DMpXMVtwk49mbJjC32ds/exec)
 
 ---
 
